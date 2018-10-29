@@ -1,0 +1,35 @@
+task fastCheck(type: Test) {
+
+    systemProperty 'env', 'test'
+    useJUnit {
+    }
+
+    // checks for code problems (e.g. unused stuff)
+    apply plugin: 'pmd'
+    pmd {
+        sourceSets = [sourceSets.main]
+    }
+    tasks.withType(Pmd) {
+        reports.html.enabled true
+
+        // exclude auto generated
+        exclude '**/src/generated/**'
+                
+        ignoreFailures = true
+    }
+
+    apply plugin: 'checkstyle'
+    checkstyle {
+        toolVersion = '8.5'
+        configFile = 'gradle/checkstyle.xml' as File
+        sourceSets = [sourceSets.main]
+    }
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.enabled false
+            html.enabled true
+        }
+    }
+
+}
+

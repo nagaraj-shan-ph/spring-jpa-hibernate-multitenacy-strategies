@@ -1,0 +1,87 @@
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'idea'
+
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'maven-publish'
+apply plugin: "io.spring.dependency-management"
+
+def iso_date = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+
+def getRevision = { ->
+    def cmd = "git rev-parse HEAD"
+    def proc = cmd.execute()
+    return proc.text.trim()
+}
+
+version = new File("${project.projectDir}/VERSION").text.replaceAll("\\s+", "")
+group = 'org.imaginea'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// UTF-8 should be standard by now. So use it!
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+jar {
+    manifest {
+        attributes(
+                "Manifest-Version": "1.0",
+                "Gradle-Version": "${gradle.gradleVersion}",
+                "Extension-Name": "${archivesBaseName}",
+                "Build-Jdk": "${JavaVersion.current().toString()}",
+                "Name": "${name}".replaceAll("\\.", "/"),
+                "Implementation-Vendor": "Imaginea",
+                "Implementation-Title": "${group}.${archivesBaseName}",
+                "Implementation-Version": "${version}",
+                "Build-Time-ISO-8601": iso_date,
+                "SCM-Revision": getRevision(),
+        )
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from "${project.buildDir}/docs/javadoc"
+    classifier = 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+    from project.sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task testJar(type: Jar, dependsOn: testClasses) {
+    classifier = 'test'
+    from sourceSets.test.output
+}
+
+artifacts {
+    archives jar
+    archives sourcesJar
+    archives testJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId jar.baseName
+            from components.java
+            artifact(sourcesJar) { classifier = 'sources' }
+            artifact(javadocJar) { // (3)
+                classifier = 'javadoc'
+            }
+        }
+    }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.3.1'
+}

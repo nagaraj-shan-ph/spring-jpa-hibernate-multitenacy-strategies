@@ -1,0 +1,43 @@
+Configuration:
+  name: Test
+  success: warn
+
+  Properties:
+    Property:
+      name: logPath
+      value: /var/log/lms
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      ThresholdFilter:
+        level: info
+      PatternLayout:
+        Pattern: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %c{1} - %msg%n'
+    RollingFile:
+      name: File
+      fileName: ${logPath}/app.log
+      filePattern: ${logPath}/app-%d{yy-MM-dd}-%i.log.gz
+      PatternLayout:
+        Pattern: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %c{1} - %msg%n'
+      DefaultRollOverStrategy:
+        max: 30
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: 10 MB
+        TimeBasedTriggeringPolicy:
+          interval: 1
+          modulate: true
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+    Logger:
+      name: org.imaginea
+      additivity: false
+      level: info
+      AppenderRef:
+        - ref: Console
+          level: info

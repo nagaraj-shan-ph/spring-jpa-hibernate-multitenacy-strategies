@@ -1,0 +1,3 @@
+INSERT INTO lms.data_source_configs (created_at, created_by, initialize, name, updated_at, updated_by, database_url, username, password) VALUES ('2018-09-12 15:21:00.441', NULL, true, 'Database1', '2018-09-12 15:21:00.441', NULL, 'jdbc:postgresql://localhost:5432/database-schema-mixup', 'postgres', 'postgres');
+
+INSERT INTO lms.tenants (created_at, created_by, tenant_name, schema_name, updated_at, updated_by, databaseUrl, datasource_config_id) VALUES ('2018-09-12 15:21:00.499', NULL, 'tenant_1', 'tenant_1', '2018-09-12 15:21:00.499', NULL, 'https://tenant.databaseUrl.com/', (select id from lms.data_source_configs where name = 'Database1'));

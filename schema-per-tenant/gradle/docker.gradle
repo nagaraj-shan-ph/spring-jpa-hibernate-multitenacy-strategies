@@ -1,0 +1,12 @@
+
+apply plugin: "com.palantir.docker"
+
+docker {
+    name "${project.group}/${jar.baseName}"
+    tags 'latest'
+    files jar
+    pull true
+    buildArgs(['JAR_FILE': "${jar.archiveName}"])
+}
+
+docker.dependsOn(bootJar)
