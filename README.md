@@ -34,7 +34,7 @@ Each tenant's data is kept in a physically separate database instance. This is t
 
 ![Separate Database](images/separate-database.png "Separate Database")
 
-#Multi-tenancy in Hibernate
+# Multi-tenancy in Hibernate
 Hibernate officially supports two different multi-tenancy mechanisms:
 
 - **separate schema:** every tenant has its own schema in a shared database
