@@ -41,3 +41,7 @@ Hibernate officially supports two different multi-tenancy mechanisms:
 - **separate database:** every tenant has its own database instance
 
 Unfortunately, both of these mechanisms come with some downsides in terms of scaling. A third Hibernate multi-tenancy mechanism, a tenant discriminator, also exists, and it’s usable—but it’s still considered a work-in-progress by some.
+
+There is a open issue [HHH-6054](https://hibernate.atlassian.net/browse/HHH-6054) to Support for discriminator-based multi-tenancy in hibernate.
+
+Hibernate provides filters which allow for parameterized data to be used in a conditional to determine if queried data should be returned or not. With this we can implement discriminator-based multi-tenant application.
