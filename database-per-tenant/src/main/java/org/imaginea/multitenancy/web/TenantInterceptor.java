@@ -2,7 +2,6 @@ package org.imaginea.multitenancy.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.imaginea.multitenancy.database.TenantContextHolder;
 import org.imaginea.multitenancy.database.admin.model.Tenant;
 import org.imaginea.multitenancy.database.admin.repository.TenantRepository;

@@ -1,12 +1,14 @@
 package org.imaginea.multitenancy;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
@@ -42,7 +44,9 @@ public class SwaggerDocumentationConfig {
   @Bean
   public Docket customImplementation() {
     return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("org.imaginea")).build().useDefaultResponseMessages(false)
-        .pathProvider(new BasePathAwareRelativePathProvider(swaggerDocBasePath));
+        .pathProvider(new BasePathAwareRelativePathProvider(swaggerDocBasePath))
+        .globalOperationParameters(Lists.newArrayList(new ParameterBuilder().name("X-TenantID").description("Tenant Id").defaultValue("tenant_1")
+            .modelRef(new ModelRef("string")).parameterType("header").required(true).build()));
   }
 
   static class BasePathAwareRelativePathProvider extends AbstractPathProvider {

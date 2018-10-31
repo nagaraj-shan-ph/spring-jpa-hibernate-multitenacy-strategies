@@ -127,7 +127,7 @@ public abstract class TenantContextHolder {
 The TenantContextHolder will hold the tenant information across the threads for each request. At the end of each request this will be clear out.
 
 
-#### TenantInterceptor
+### TenantInterceptor
 
 An interceptor that reads the tenant identifier from the request header (or JWT in different implementations) and sets the tenant context.
 
