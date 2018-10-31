@@ -34,17 +34,13 @@ public abstract class TenantContextHolder {
     setTenant(tenantContext);
   }
 
-  public static void setTenant(Long tenant) {
-    setTenant(new TenantContext(tenant));
+  public static void setTenant(Tenant tenant, boolean inheritable) {
+    TenantContext tenantContext = new TenantContext(tenant);
+    setTenant(tenantContext, inheritable);
   }
 
   public static void setTenant(TenantContext tenantContext) {
     setTenant(tenantContext, false);
-  }
-
-  public static void setTenant(Tenant tenant, boolean inheritable) {
-    TenantContext tenantContext = new TenantContext(tenant);
-    setTenant(tenantContext, inheritable);
   }
 
   public static void setTenant(TenantContext tenantContext, boolean inheritable) {

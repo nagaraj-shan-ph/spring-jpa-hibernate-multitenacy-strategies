@@ -7,9 +7,10 @@
  * in the user guide at https://docs.gradle.org/4.10/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'spring-jpa-hibernate-multitenacy-strategies'
+rootProject.name = 'hibernate-multi-tenancy'
 
+include 'common'
 include 'shared-schema'
 include 'schema-per-tenant'
 include 'database-per-tenant'
-include 'database-schema-mixup'
+

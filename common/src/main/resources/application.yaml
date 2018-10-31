@@ -3,7 +3,7 @@ logging:
   config: classpath:log4j2/log4j2.yml
   level:
     org:
-      hibernate: INFO
+      hibernate: TRACE
       imaginea: INFO
       springframework: INFO
       flywaydb: INFO
@@ -26,7 +26,7 @@ spring:
       minimum-idle: 10
     password: postgres
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/database-schema-mixup?currentSchema=lms
+    url: jdbc:postgresql://localhost:5432/shared-schema?currentSchema=lms
     username: postgres
   jackson:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat

@@ -1,3 +1,4 @@
+subprojects {
 task fastCheck(type: Test) {
 
     systemProperty 'env', 'test'
@@ -31,5 +32,5 @@ task fastCheck(type: Test) {
         }
     }
 
-}
+}}
 

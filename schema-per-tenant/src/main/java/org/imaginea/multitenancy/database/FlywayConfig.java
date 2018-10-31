@@ -2,7 +2,6 @@ package org.imaginea.multitenancy.database;
 
 import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
-import org.imaginea.multitenancy.database.admin.repository.TenantRepository;
 import org.imaginea.multitenancy.database.lms.TenantSchemaResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,17 +29,4 @@ public class FlywayConfig {
     return flyway;
   }
 
-  @Bean
-  public Boolean tenantsFlyway(TenantRepository repository) {
-    repository.findAll().forEach(tenant -> {
-      String schema = tenant.getSchemaName();
-      Flyway flyway = new Flyway();
-      flyway.setLocations("db/migration/tenants");
-      flyway.setDataSource(dataSource);
-      flyway.setSchemas(schema);
-      flyway.setBaselineOnMigrate(true);
-      flyway.migrate();
-    });
-    return true;
-  }
 }

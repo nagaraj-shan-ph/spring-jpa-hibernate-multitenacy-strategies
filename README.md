@@ -45,3 +45,126 @@ Unfortunately, both of these mechanisms come with some downsides in terms of sca
 There is a open issue [HHH-6054](https://hibernate.atlassian.net/browse/HHH-6054) to Support for discriminator-based multi-tenancy in hibernate.
 
 Hibernate provides filters which allow for parameterized data to be used in a conditional to determine if queried data should be returned or not. With this we can implement discriminator-based multi-tenant application.
+
+## Implementation
+
+In this repo I have included Implementation details for all three approaches
+
+## Technologies and frameworks used:
+
+- Java 1.8
+- Gradle
+- Spring boot 2
+- Hibernate
+- Postgres 9.6 or greater
+- Flyway
+
+## Technologies and frameworks used:
+
+## Common Implementation Details:
+
+### TenantContextHolder
+
+We need one place, where tenant name will be stored. It should be available across threads, service classes, simply anywhere, where tenant specific code could be executed. 
+
+```java
+
+public abstract class TenantContextHolder {
+
+  private static ThreadLocal<TenantContext> tenants;
+
+  private static ThreadLocal<TenantContext> inheritableTenants;
+
+  static {
+    tenants = new NamedThreadLocal<>("tenants Context");
+    inheritableTenants = new NamedInheritableThreadLocal<>("tenants Context");
+  }
+
+  public static void reset() {
+
+    tenants.remove();
+    inheritableTenants.remove();
+  }
+
+  public static TenantContext getContext() {
+    TenantContext context = tenants.get();
+    if (context == null) {
+      context = inheritableTenants.get();
+    }
+    return context;
+  }
+
+  public static void setTenant(Tenant tenant) {
+    TenantContext tenantContext = new TenantContext(tenant);
+    setTenant(tenantContext);
+  }
+
+  public static void setTenant(Tenant tenant, boolean inheritable) {
+    TenantContext tenantContext = new TenantContext(tenant);
+    setTenant(tenantContext, inheritable);
+  }
+
+  public static void setTenant(TenantContext tenantContext) {
+    setTenant(tenantContext, false);
+  }
+
+  public static void setTenant(TenantContext tenantContext, boolean inheritable) {
+    if (tenantContext == null) {
+      reset();
+    } else {
+      if (inheritable) {
+        inheritableTenants.set(tenantContext);
+        tenants.remove();
+      } else {
+        tenants.set(tenantContext);
+        inheritableTenants.remove();
+      }
+    }
+  }
+}
+
+```
+The TenantContextHolder will hold the tenant information across the threads for each request. At the end of each request this will be clear out.
+
+
+#### TenantInterceptor
+
+An interceptor that reads the tenant identifier from the request header (or JWT in different implementations) and sets the tenant context.
+
+```java
+
+@Component
+public class TenantInterceptor extends HandlerInterceptorAdapter {
+
+  public static final String TENANT_HEADER = "X-TenantID";
+  Logger logger = LoggerFactory.getLogger(getClass());
+
+  @Autowired
+  TenantRepository repository;
+
+  @Override
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    String tenantHeader = request.getHeader(TENANT_HEADER);
+    boolean tenantSet = false;
+    if (!tenantHeader.isEmpty()) {
+      Tenant tenant = repository.findByName(tenantHeader).orElseThrow(() -> new RuntimeException("Invalid Tenant :" + tenantHeader));
+      logger.debug("Set TenantContextHolder: {}", tenant);
+      TenantContextHolder.setTenant(tenant, true);
+      tenantSet = true;
+    } else {
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+      response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+      response.getWriter().write("{\"error\": \"No tenant supplied\"}");
+      response.getWriter().flush();
+    }
+    return tenantSet;
+  }
+
+  @Override
+  public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    logger.debug("Clear TenantContextHolder: {}", TenantContextHolder.getContext());
+    TenantContextHolder.reset();
+  }
+}
+
+```

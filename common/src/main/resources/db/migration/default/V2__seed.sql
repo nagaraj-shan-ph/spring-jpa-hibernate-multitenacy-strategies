@@ -1,0 +1,1 @@
+INSERT INTO lms.tenants (created_at, created_by, tenant_name, schema_name, updated_at, updated_by, url) VALUES ('2018-09-12 15:21:00.499', NULL, 'tenant_1', 'tenant_1', '2018-09-12 15:21:00.499', NULL, 'https://tenant.url.com/');
