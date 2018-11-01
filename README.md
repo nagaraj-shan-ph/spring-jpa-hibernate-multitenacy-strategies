@@ -61,11 +61,38 @@ In this repo I have included Implementation details for all three approaches
 
 ## Technologies and frameworks used:
 
-## Common Implementation Details:
+## Implementation Details:
+
+In this Sample we have taken a simple ContactList Management Implementation.
+
+- A Tenant can create one or more ContactList in the System
+- A Tenant can create One or more Contact to a particular List
+
+### Domain Model
+
+![Domain Model](images/domain-model.png "Domain Model")
+
+### REST API's
+
+All apis Should have custom header **X-Tenant-ID** to identify the tenant.
+
+| HTTP Method |         Endpoint                        |                            Response                            |     HTTP Status     |
+|:-----------:|:---------------------------------------:|:--------------------------------------------------------------:|:-------------------:|
+|     GET     | /api/lists                              | Returns all lists of the system in JSON.                       |   200/204/401/500   |
+|     POST    | /api/lists                              | Create a user in the system.                                   |   200/204/401/500   |
+|     GET     | /api/lists/{listId}                     | Returns a user in JSON.                                        |   200/204/401/500   |
+|     PUT     | /api/lists/{listId}                     | Returns a user in JSON.                                        |     201/409/500     |
+|    DELETE   | /api/lists/{listId}                     | Delete a list by Id.                                           |   200/401/409/500   |
+|     GET     | /api/lists/{listId}/contacts            | Returns all contacts of a lists in JSON.                       |   200/204/401/500   |
+|     POST    | /api/lists/{listId}/contacts            | Create a contact in the list.                                  |   200/204/401/500   |
+|     GET     | /api/lists/{listId}/contacts/{id}       | Returns a contact from the list in JSON.                       |   200/204/401/500   |
+|     PUT     | /api/lists/{listId}/contacts/{id}       | Update a contact in the list.                                  |     201/409/500     |
+|    DELETE   | /api/lists/{listId}/contacts/{id}       | Delete a contact by Id and listId                              |   200/401/409/500   |
+
 
 ### TenantContextHolder
 
-We need one place, where tenant name will be stored. It should be available across threads, service classes, simply anywhere, where tenant specific code could be executed. 
+We need one place, where tenant information will be stored. It should be available across threads, service classes, simply anywhere, where tenant specific code could be executed. 
 
 ```java
 

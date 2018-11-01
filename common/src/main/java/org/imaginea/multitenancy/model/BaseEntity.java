@@ -1,4 +1,4 @@
-package org.imaginea.multitenancy.database;
+package org.imaginea.multitenancy.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;

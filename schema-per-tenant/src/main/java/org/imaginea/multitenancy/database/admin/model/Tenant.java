@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import org.imaginea.multitenancy.database.BaseEntity;
+import org.imaginea.multitenancy.model.BaseEntity;
 import org.imaginea.multitenancy.database.lms.TenantSchemaResolver;
 
 /**

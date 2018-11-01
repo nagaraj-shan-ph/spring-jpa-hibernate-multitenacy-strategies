@@ -3,7 +3,7 @@ package org.imaginea.multitenancy.database.admin.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import org.imaginea.multitenancy.database.BaseEntity;
+import org.imaginea.multitenancy.model.BaseEntity;
 import org.imaginea.multitenancy.database.lms.TenantSchemaResolver;
 
 /** Defines the multi-tenant datasource configuration. */

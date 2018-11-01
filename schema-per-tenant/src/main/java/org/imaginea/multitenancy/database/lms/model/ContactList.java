@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import org.imaginea.multitenancy.database.BaseEntity;
+import org.imaginea.multitenancy.model.BaseEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
