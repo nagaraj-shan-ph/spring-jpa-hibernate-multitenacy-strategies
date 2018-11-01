@@ -14,7 +14,7 @@ Approach:
 
 Create **shared-schema** database in postgres. 
 
-When the application start-up [flyway](https://flywaydb.org/getstarted/) migration scripts will create the necessary tables.
+Application start-up [flyway](https://flywaydb.org/getstarted/) migration scripts will create the necessary tables.
 
 ![Shared Schema](../images/shared-schema-ERD.png "Shared Schema")
 
@@ -130,6 +130,8 @@ onEntityChange() method being called for any new entity or update on existing en
 
 ### MultiTenantAspect
 
+Spring AOP MultiTenantAspect class intercepts the service call and set's the hibernate tenant filter.
+
 ```java
 
 @Aspect
@@ -232,6 +234,6 @@ public class ContactServiceImpl implements ContactService {
 
 ```
 
-For more information [See](src)
+For more information [Refer](src/main/java/org/imaginea/multitenancy) the implementation.
 
 
