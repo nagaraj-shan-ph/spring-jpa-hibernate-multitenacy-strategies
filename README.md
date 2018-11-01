@@ -65,7 +65,7 @@ In this repo I have included Implementation details for all three approaches
 
 In this Sample we have taken a simple ContactList Management Implementation.
 
-- A Tenant can create one or more ContactList in the System
+- A Tenant can create One or more ContactList in the System
 - A Tenant can create One or more Contact to a particular List
 
 ### Domain Model
@@ -77,7 +77,7 @@ In this Sample we have taken a simple ContactList Management Implementation.
 All apis Should have custom header **X-Tenant-ID** to identify the tenant.
 
 | HTTP Method |         Endpoint                        |                            Response                            |     HTTP Status     |
-|:-----------:|:---------------------------------------:|:--------------------------------------------------------------:|:-------------------:|
+|:----        |:-----                                   |:-----                                                          |               -----:|
 |     GET     | /api/lists                              | Returns all lists of the system in JSON.                       |   200/204/401/500   |
 |     POST    | /api/lists                              | Create a user in the system.                                   |   200/204/401/500   |
 |     GET     | /api/lists/{listId}                     | Returns a user in JSON.                                        |   200/204/401/500   |
